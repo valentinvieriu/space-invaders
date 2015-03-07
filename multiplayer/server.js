@@ -1,33 +1,15 @@
-/**
- * Module Dependencies
- */
-var express = require('express'),
-    sio = require('socket.io'),
-    join = require('path').join
-;
+var express = require('express');
+var app     = express();
+var server  = require('http').Server(app);
+var io      = require('socket.io')(server);
 
-/**
- * Create app
- */
-var app = express.createServer(
-    express.bodyParser(),
-    express.static('public')
-);
-app.use('/ui', express.static(join(__dirname, '../ui')));
+server.listen(process.env.PORT || 3000);
 
-/**
- * Listen
- */
-app.listen(3000);
-
- /**
-  * Socket.io
-  */
-var io = sio.listen(app);
+app.use(express.static(__dirname + '/public'));
 
 var nicks = {};
 
-io.sockets.on('connection', function(socket){
+io.on('connection', function(socket){
 
     socket.on('join', function(name){
         if (!nicks[name]){
@@ -44,6 +26,7 @@ io.sockets.on('connection', function(socket){
         socket.broadcast.emit('key', socket.nickname, name);
     });
 });
+
 
 
 
