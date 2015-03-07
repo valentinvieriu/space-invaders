@@ -1,11 +1,15 @@
-var express = require('express');
-var app     = express();
-var server  = require('http').Server(app);
-var io      = require('socket.io')(server);
+var http       = require('http');
+var static     = require('node-static');
+var fileServer = new static.Server('./public');
+var server     = http.createServer(function (request, response) {
+    request.addListener('end', function () {
+        fileServer.serve(request, response);
+    }).resume();
+});
+var io         = require('socket.io')(server);
 
 server.listen(process.env.PORT || 3000);
 
-app.use(express.static(__dirname + '/public'));
 
 var nicks = {};
 
