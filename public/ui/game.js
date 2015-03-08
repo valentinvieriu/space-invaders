@@ -167,6 +167,9 @@ function draw () {
 			c.font = '18px Arial';
 			c.fillStyle = '#fff';
 			c.fillText(win.nickname +' has WON! Your score is '+ win.ship.points +'. time: '+ finalTime(), 10, h-20);
+			setTimeout(function(){
+				window.location.reload();
+			},3000);
 			break;
 		case states.LOST:
 			logo.draw(0, (w/2)-170, 100);
@@ -174,6 +177,9 @@ function draw () {
 			c.fillStyle = '#fff';
             c.textAlign = 'left';
 			c.fillText('You have LOST!', 10, h-20);
+			setTimeout(function(){
+				window.location.reload();
+			},3000);
 			break;
 	}
 }
