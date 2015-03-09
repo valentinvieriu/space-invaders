@@ -1,8 +1,25 @@
+@font-face {
+    font-family: 'cosmic_alienregular';
+    src: url('/fonts/ca-webfont.eot');
+    src: url('/fonts/ca-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/ca-webfont.woff2') format('woff2'),
+         url('/fonts/ca-webfont.woff') format('woff'),
+         url('/fonts/ca-webfont.ttf') format('truetype'),
+         url('/fonts/ca-webfont.svg#cosmic_alienregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 body {
     text-align: center;
     font-family: monospace;
     margin: 0;
     padding: 0;
+    font-family: 'cosmic_alienregular';
+    background-image: url("/ui/bg1.jpg");
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 #canvas {
     display: block;
@@ -10,6 +27,7 @@ body {
     margin: 0 auto;
     max-width: 100%;
     height: auto;
+    transform:translate3d(0,0,0);
 }
 #controls {
     padding-top: 5px;

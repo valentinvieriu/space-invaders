@@ -7,6 +7,10 @@ var canvas  = document.getElementById('canvas'),
 
 	cleanup = { bullets: [], invaders: [] }
 ;
+// Initialize Canvas
+canvas.width = w;
+canvas.height = h; 
+
 // share the context
 images.context = measuring.context = c;
 
@@ -15,6 +19,7 @@ var sprites = images.getImage('ui/sprites.png'),
 	logo    = new Sprite(sprites, 350, 170, [ [170, 10] ])
 ;
 
+var globalAnimationFrame;
 // elements
 var players = [],
 	bullets = [],
@@ -33,6 +38,17 @@ var score = 0,
 	gameEndTime,
 	maxTime = 75000
 ;
+
+// state
+var states = {
+		NOT_STARTED: 'NOT_STARTED',
+		PLAYING: 'PLAYING',
+		WON: 'WON',
+		LOST: 'LOST'
+	},
+	state = states.NOT_STARTED
+;
+
 function gameTimeMilliseconds(){
 	return new Date().getTime() - gameStartTime;
 }
@@ -60,19 +76,8 @@ function winningPlayer(){
     return winning;
 }
 
-// state
-var states = {
-		NOT_STARTED: 'NOT_STARTED',
-		PLAYING: 'PLAYING',
-		WON: 'WON',
-		LOST: 'LOST'
-	},
-	state = states.NOT_STARTED
-;
-
 // set up environment
 function step () {
-
 	switch (state){
 		case states.NOT_STARTED:
 			if (players.length){
@@ -135,18 +140,16 @@ function step () {
 
 // draw environment
 function draw () {
-	canvas.width = w;
-	canvas.height = h; 
 	c.clearRect(0, 0, w, h);
-	c.fillStyle = '#000';
+	c.fillStyle = 'rgba(0,0,0,0.6)';
 	c.fillRect(0,0,w,h);
 	switch (state){
 		case states.NOT_STARTED:
-			logo.draw(0, (w/2)-170, 100);
+			logo.draw(0, (w/2)-170, (h/2)-100);
             c.textAlign = 'left';
-			c.font = '18px Arial';
+			c.font = '18px cosmic_alienregular';
 			c.fillStyle = '#fff';
-			c.fillText('Press any key to start', 10, h-20);
+			c.fillText('Press any key to start', (w/2 -150 ), h-100);
 			break;
 		case states.PLAYING:
 			players.forEach(function(player){
@@ -157,45 +160,57 @@ function draw () {
 			});
 			invaders.draw();
             c.textAlign = 'left';
-			c.font = '12px Arial';
+			c.font = '12px cosmic_alienregular';
 			c.fillStyle = '#fff';
-			c.fillText('Time: '+ gameTime(), 10, h-20);
-			c.font = '16px Arial';
+			c.fillText('Time: '+ gameTime(), w-100, 20);
+			c.font = '16px cosmic_alienregular';
 			c.fillText('Score: '+ players.map(function(player){
                 return player.nickname +': '+ player.ship.points;
-            }).join(', '), 10, h-40);
+            }).join(', '), 10, 20);
 			break;
 		case states.WON:
             var win = winningPlayer();
-			logo.draw(0, (w/2)-170, 100);
+			logo.draw(0, (w/2)-170, (h/2)-100);
             c.textAlign = 'left';
-			c.font = '18px Arial';
+			c.font = '18px cosmic_alienregular';
 			c.fillStyle = '#fff';
-			c.fillText(win.nickname +' has WON! Your score is '+ win.ship.points +'. time: '+ finalTime(), 10, h-20);
+			c.fillText(win.nickname +' has WON! Your score is '+ win.ship.points +'. time: '+ finalTime(), (w/3 -100), h-100);
 			setTimeout(function(){
-				window.location.reload();
-			},3000);
+				window.location.reload(true);
+				// window.cancelAnimationFrame(globalAnimationFrame);
+				// globalAnimationFrame=undefined;
+				// players=[];
+				// state=states.NOT_STARTED;
+				// frame();
+			},5000);
 			break;
 		case states.LOST:
 			logo.draw(0, (w/2)-170, 100);
-			c.font = '18px Arial';
+			c.font = '18px cosmic_alienregular';
 			c.fillStyle = '#fff';
             c.textAlign = 'left';
 			c.fillText('You have LOST!', 10, h-20);
 			setTimeout(function(){
-				window.location.reload();
-			},3000);
+				window.location.reload(true);
+				// window.cancelAnimationFrame(globalAnimationFrame);
+				// globalAnimationFrame=undefined;
+				// players=[];
+				// state=states.NOT_STARTED;
+				// frame();
+			},5000);
 			break;
 	}
 }
 function frame () {
+	// console.time('Step');
 	step();
+	// console.timeEnd('Step');
+	// console.time('Draw');
 	draw();
-	window.requestAnimationFrame(frame);
+	// console.timeEnd('Draw');
+	globalAnimationFrame = window.requestAnimationFrame(frame);
 }
 
-// Make it full screen
-canvas.addEventListener("click",fullscreen);
 // start the game
 frame();
 
@@ -208,18 +223,7 @@ function eachClean(arr, fn){
 		}
 	}
 }
-function fullscreen(){
-           var el = document.getElementById('canvas');
- 
-           if(el.webkitRequestFullScreen) {
-               el.webkitRequestFullScreen();
-           }
-          else {
-             el.mozRequestFullScreen();
-          }            
-}
- 
-canvas.addEventListener("click",fullscreen)
+
 Array.prototype.eachClean = function(fn){
 	return eachClean(this, fn);
 };
