@@ -19,9 +19,11 @@ var sprites = images.getImage('ui/sprites.png'),
 var players = [],
 	bullets = [],
 	invaders = new InvaderLineCollection([
-		new InvaderLine({ x: 50, y: 50 }),
-		new InvaderLine({ x: 50, y: 100, spriteIndex: INVADER_SPRITES.PINK }),
-		new InvaderLine({ x: 50, y: 150 })
+		new InvaderLine({ x: 50, y: 50, spriteIndex: INVADER_SPRITES.GREEN }),
+		new InvaderLine({ x: 50, y: 100, spriteIndex: INVADER_SPRITES.BLUE }),
+		new InvaderLine({ x: 50, y: 150, spriteIndex: INVADER_SPRITES.BLUE }),
+		new InvaderLine({ x: 50, y: 200, spriteIndex: INVADER_SPRITES.PINK }),
+		new InvaderLine({ x: 50, y: 250, spriteIndex: INVADER_SPRITES.PINK })
 	])
 ;
 

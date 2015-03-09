@@ -1,29 +1,32 @@
 /*global Sprite,sprites,w,h, measuring,eachClean*/
 var INVADER_SPRITES = {
-	GREEN: 0,
-	PINK: 1,
-	HIT: 2
+	GREEN : 0,
+	PINK  : 1,
+	BLUE  : 2,
+	HIT   : 3
 };
 
 function Invader(opt){
 	this.sprite = new Sprite(sprites, this.w, this.h, [
-		[10, 523],  // green
-		[131, 523], // pink
-		[191, 523]  // hit
+		[10, 521],  // green
+		[131, 521], // pink
+		[73, 521],  // blue
+		[433, 276]  // hit
 	]);
+
 	this.spriteIndex = opt.spriteIndex || this.spriteIndex;
 	this.x = opt.x || this.x;
 	this.y = opt.y || this.y;
 }
 Invader.prototype = {
-	x: 0,
-	y: 0,
-	w: 32,
-	h: 16,
-	isHit: false,
-	points: 10,
-	jump: 4,
-	spriteIndex: INVADER_SPRITES.GREEN,
+	x           : 0,
+	y           : 0,
+	w           : 32,
+	h           : 20,
+	isHit       : false,
+	points      : 10,
+	jump        : 4,
+	spriteIndex : INVADER_SPRITES.GREEN,
 	draw: function(){
 		var o = this.offset();
 		this.sprite.draw(this.spriteIndex, this.x - o.x, this.y - o.y);
@@ -61,7 +64,7 @@ function InvaderLine(opt){
 	this.y = opt.y || this.y;
 	this.invaders = [];
 	var self = this;
-	[0, 50, 100, 150, 200, 250].forEach(function(x, i){
+	[0, 50, 100, 150, 200, 250, 300, 350].forEach(function(x, i){
 		self.invaders.push(new Invader({
 			spriteIndex: opt.spriteIndex || 0,
 			x: x + self.x,
@@ -83,7 +86,7 @@ InvaderLine.prototype = {
 		var self = this;
 		this.invaders.forEach(function(invader, i){
 			invader.y = self.y;
-			invader.draw();
+			invader.draw(self.spriteIndex);
 		});
 	},
 	width: function(){
