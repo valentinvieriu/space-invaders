@@ -1,17 +1,21 @@
 /*global Sprite,sprites,w,h, measuring,eachClean*/
 var INVADER_SPRITES = {
 	GREEN : 0,
-	PINK  : 1,
-	BLUE  : 2,
-	HIT   : 3
+	PINK  : 2,
+	BLUE  : 4,
+	HIT   : 6
 };
 
 function Invader(opt){
 	this.sprite = new Sprite(sprites, this.w, this.h, [
 		[10, 521],  // green
+		[10, 549],  // green 2
 		[131, 521], // pink
+		[131, 549], // pink 2
 		[73, 521],  // blue
-		[433, 276]  // hit
+		[73, 549],  // blue 2
+		[433, 276],  // hit
+		[433, 276]  // hit 2
 	]);
 
 	this.spriteIndex = opt.spriteIndex || this.spriteIndex;
@@ -19,17 +23,23 @@ function Invader(opt){
 	this.y = opt.y || this.y;
 }
 Invader.prototype = {
-	x           : 0,
-	y           : 0,
-	w           : 32,
-	h           : 20,
-	isHit       : false,
-	points      : 10,
-	jump        : 4,
-	spriteIndex : INVADER_SPRITES.GREEN,
-	draw: function(){
+	x                     : 0,
+	y                     : 0,
+	w                     : 32,
+	h                     : 20,
+	isHit                 : false,
+	points                : 10,
+	jump                  : 4,
+	spriteIndex           : INVADER_SPRITES.GREEN,
+	isSpriteAnimatedState : true,
+	draw: function(_spriteIndex){
 		var o = this.offset();
-		this.sprite.draw(this.spriteIndex, this.x - o.x, this.y - o.y);
+		var spriteIndex = _spriteIndex;
+		if (this.isSpriteAnimatedState ) {
+			this.sprite.draw(spriteIndex, this.x - o.x, this.y - o.y);
+		} else {
+			this.sprite.draw(spriteIndex+1, this.x - o.x, this.y - o.y);
+		}
 	},
 	offset: function(){
 		return {
@@ -64,7 +74,7 @@ function InvaderLine(opt){
 	this.y = opt.y || this.y;
 	this.invaders = [];
 	var self = this;
-	[0, 50, 100, 150, 200, 250, 300, 350].forEach(function(x, i){
+	[0, 50, 100, 150, 200, 250, 300, 350, 400, 450].forEach(function(x, i){
 		self.invaders.push(new Invader({
 			spriteIndex: opt.spriteIndex || 0,
 			x: x + self.x,
@@ -84,9 +94,9 @@ InvaderLine.prototype = {
 	moveWait: 100,
 	draw: function(){
 		var self = this;
-		this.invaders.forEach(function(invader, i){
+		this.invaders.forEach(function InvaderLineDraw(invader, i){
 			invader.y = self.y;
-			invader.draw(self.spriteIndex);
+			invader.draw(invader.spriteIndex);
 		});
 	},
 	width: function(){
@@ -134,6 +144,7 @@ InvaderLine.prototype = {
 			this.y+= jump.y;
 			eachClean(this.invaders, function(invader, i){
 				invader.x+= jump.x;
+				invader.isSpriteAnimatedState = !invader.isSpriteAnimatedState;
 				if (invader.isDestroyed()){
 					return true;
 				}
@@ -187,7 +198,7 @@ InvaderLineCollection.prototype = {
 		return highestY;
 	},
 	draw: function(){
-		this.lines.forEach(function(line){
+		this.lines.forEach(function InvaderLineCollectionDraw(line){
 			line.draw();
 		});
 	},

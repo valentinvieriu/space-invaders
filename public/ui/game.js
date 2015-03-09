@@ -54,6 +54,7 @@ function winningPlayer(){
     players.forEach(function(player){
         if (player.ship.points > points){
             winning = player;
+            points = player.ship.points;
         }
     });
     return winning;

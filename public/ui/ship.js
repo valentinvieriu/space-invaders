@@ -28,7 +28,7 @@ Ship.prototype = {
 	h: 16,
 	jump: 4,
 	lastBullet: new Date().getTime(),
-	timeBetweenBullets: 500,
+	timeBetweenBullets: 250,
     spriteIndex: 0,
 
 	draw: function(){
