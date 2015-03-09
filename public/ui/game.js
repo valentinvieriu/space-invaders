@@ -2,8 +2,8 @@
 
 var canvas  = document.getElementById('canvas'),
 	c       = canvas.getContext('2d'),
-	w       = canvas.width,
-	h       = canvas.height,
+	w       = window.innerWidth;//canvas.width,
+	h       = window.innerHeight;//canvas.height,
 
 	cleanup = { bullets: [], invaders: [] }
 ;
@@ -135,6 +135,8 @@ function step () {
 
 // draw environment
 function draw () {
+	canvas.width = w;
+	canvas.height = h; 
 	c.clearRect(0, 0, w, h);
 	c.fillStyle = '#000';
 	c.fillRect(0,0,w,h);
@@ -192,10 +194,10 @@ function frame () {
 	window.requestAnimationFrame(frame);
 }
 
-
+// Make it full screen
+canvas.addEventListener("click",fullscreen);
 // start the game
 frame();
-
 
 // helpers
 function eachClean(arr, fn){
@@ -206,6 +208,18 @@ function eachClean(arr, fn){
 		}
 	}
 }
+function fullscreen(){
+           var el = document.getElementById('canvas');
+ 
+           if(el.webkitRequestFullScreen) {
+               el.webkitRequestFullScreen();
+           }
+          else {
+             el.mozRequestFullScreen();
+          }            
+}
+ 
+canvas.addEventListener("click",fullscreen)
 Array.prototype.eachClean = function(fn){
 	return eachClean(this, fn);
 };
