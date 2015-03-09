@@ -1,11 +1,16 @@
 /*global socket,prompt,io */
 window.onload = function(){
     var socket = io.connect();
+    var cacheName = localStorage.getItem('cacheName') || prompt('What is your nickname?');
+    localStorage.setItem('cacheName',cacheName);
+
+    // Retrieve the object from storage
+    var retrievedObject = localStorage.getItem('testObject');
 
     socket.on('connect', function(){
 
         // send a join event with your name
-        socket.emit('join', prompt('What is your nickname?'));
+        socket.emit('join', cacheName);
 
         frame();
     });

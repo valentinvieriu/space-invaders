@@ -28,7 +28,8 @@ var players = [],
 		new InvaderLine({ x: 50, y: 100, spriteIndex: INVADER_SPRITES.BLUE }),
 		new InvaderLine({ x: 50, y: 150, spriteIndex: INVADER_SPRITES.BLUE }),
 		new InvaderLine({ x: 50, y: 200, spriteIndex: INVADER_SPRITES.PINK }),
-		new InvaderLine({ x: 50, y: 250, spriteIndex: INVADER_SPRITES.PINK })
+		new InvaderLine({ x: 50, y: 250, spriteIndex: INVADER_SPRITES.PINK }),
+		new InvaderLine({ x: 50, y: 300, spriteIndex: INVADER_SPRITES.PINK }),
 	])
 ;
 

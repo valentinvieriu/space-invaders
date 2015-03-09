@@ -74,7 +74,7 @@ function InvaderLine(opt){
 	this.y = opt.y || this.y;
 	this.invaders = [];
 	var self = this;
-	[0, 50, 100, 150, 200, 250, 300, 350, 400, 450].forEach(function(x, i){
+	[0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750].forEach(function(x, i){
 		self.invaders.push(new Invader({
 			spriteIndex: opt.spriteIndex || 0,
 			x: x + self.x,
